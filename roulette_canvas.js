@@ -16,9 +16,10 @@ var angles = [];
 var weightAccum = 0;
 for (let i = 0; i < weights.length; i++) {
   weightAccum += weights[i];
-  angles.push(Math.floor(360 * (weightAccum / weightsSum)));
+  angles.push(Math.round(360 * (weightAccum / weightsSum) * 10) / 10);
 }
 console.log(angles);
+console.log(options);
 
 document.getElementById("spin").addEventListener("click", spin);
 
@@ -111,9 +112,11 @@ function drawRouletteWheel() {
 }
 
 function spin() {
+  // spinAngleStart = 216; for Test
   spinAngleStart = Math.random() * 20 + 10;
   spinTime = 0;
-  spinTimeTotal = Math.random() * 3 + 4 * 100;
+  // spinTimeTotal = 180; for Test
+  spinTimeTotal = Math.random() * 3 + 4 * 3000;
   rotateWheel();
 }
 
@@ -134,17 +137,17 @@ function stopRotateWheel() {
   var degrees = startAngle * 180 / Math.PI + 90;
   var arcd = arc * 180 / Math.PI;
   // var index = Math.floor((360 - degrees % 360) / arcd);
-  var stopAngle = Math.floor(360 - degrees % 360);
+  var stopAngle = Math.round(360 - degrees % 360);
   var index = 0;
   for (let i = 0; i < angles.length; i++) {
-    if (stopAngle <= angles[i]-1) {
+    if (stopAngle < angles[i]) {
       index = i;
       break;
     }
 
   }
 
-  console.log("degrees: " + degrees + " stopAngle: " + stopAngle);
+  console.log("degrees: " + degrees + " stopAngle: " + stopAngle + "   index :" + index + "   person : " + options[index]);
   console.log(index);
   ctx.save();
   ctx.font = 'bold 30px Helvetica, Arial';
