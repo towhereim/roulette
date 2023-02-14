@@ -3,20 +3,134 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <script>
+        var rouletteData;
+
+        function insertAfter(referenceNode, newNode) {
+            const parent = (!referenceNode.parentNode) ? document.getElementById('box') : referenceNode.parentNode;
+            parent.insertBefore(newNode, referenceNode.nextSibling);
+        }
+        const add_textbox = (obj, item, weight, index) => {
+            const newLi = document.createElement('li');
+            const li = (obj.id == "box") ? newLi : obj.parentNode;
+            if (!item) { item = "" }
+            if (!weight) { weight = "" }
+            newLi.innerHTML = "<input type='text' placeholder='이름' class='item' value=" + item + "> <input type='text' placeholder='가중치' class='weight' value=" + weight + "> <input type='button' value='추가' onclick='add_textbox(this)'>";
+            if (index != 0) { newLi.innerHTML += "<input type='button' value='삭제' onclick='remove(this)'>" }
+            insertAfter(li, newLi);
+        }
+        const remove = (obj) => {
+            document.getElementById('box').removeChild(obj.parentNode);
+        }
+
+        //edit roulette data
+        const editData = () => {
+            modalOpen();
+            const box = document.getElementById('box');
+            while (box.firstChild) {
+                box.firstChild.remove()
+            }
+            for (let i = 0; i < rouletteData.items.length; i++) {
+                add_textbox(box, rouletteData.items[i], rouletteData.weights[i], i);
+            }
+        }
+
+        //apply roulette data
+        const setData = () => {
+            const liList = document.getElementById('box').childNodes;
+            rouletteData.items = [];
+            rouletteData.weights = [];
+            for (let i = 0; i < liList.length; i++) {
+                rouletteData.items[i] = liList[i].children[0].value;
+                rouletteData.weights[i] = parseInt(liList[i].children[1].value);
+            }
+            //console.log(rouletteData.items);
+            //console.log(rouletteData.weights);
+            localStorage.setItem('rouletteData', JSON.stringify(rouletteData));
+            init();
+            drawRouletteWheel();
+            modalClose();
+        }
+
+        const closeData = () => {
+            modalClose();
+        }
+
+        var isModalOpen = false;
+        function modalOpen() {
+            document.getElementById('container').classList.add("modal-open");
+            isModalOpen = true;
+        }
+        function modalClose() {
+            document.getElementById('container').classList.remove("modal-open");
+            isModalOpen = false;
+        }
+
+        const pasteClip = (e) => {
+            const clipText = e.clipboardData.getData('text/plain');
+            var execute = false;
+            if (clipText) { execute = confirm("클립보드 데이터를 붙여넣으시겠습니까?") }
+            if (!execute) { return; }
+
+            clipRows = clipText.split("\r\n");
+
+
+            console.log(clipRows);
+            console.log(clipText);
+            while (box.firstChild) {
+                box.firstChild.remove()
+            }
+            for (let i = 0; i < clipRows.length; i++) {
+                arrThisRow = clipRows[i].split("\t")
+                add_textbox(box, arrThisRow[0], arrThisRow[1], i);
+            }
+        }
+    </script>
 </head>
 
 <body style="background-color: aquamarine;">
     <!-- <header>재미로 해보는 룰렛!</header> -->
     <article>
         <section>
+            <div class="header">룰렛판 돌리기</div>
             <div>
-                <input type="button" value="spin" style="float:left;" id='spin' />
                 <canvas id="canvas" width="500" height="500"></canvas>
             </div>
+            <div class="btn">
+                <a href="#" class="btn-3d cyan" id='spin'>돌리고~ 도올리이고~!</a>
+                <a href="#" class="btn-3d cyan" id='editData'>룰렛판 수정</a>
+                <!-- <a href="#" class="btn-3d cyan" id='viewResult'>결과보기</a> -->
+            </div>
         </section>
+        <aside>
+        </aside>
     </article>
     <footer></footer>
+    <div id="container">
+        <div id="modal" class="modal">
+            <div class="header">룰렛판 수정</div>
+            <div class="body">
+                <div id="box"></div>
+                <div class="info">
+                    페이지 빈 곳을 클릭하고 이름 가중치로 되어 있는 엑셀 표를 붙여넣을 수 있습니다!😀
+                </div>
+                <div class="btn">
+                    <a href="#" class="btn-3d cyan" id='setData'>적용</a>
+                    <a href="#" class="btn-3d cyan" id='cancel'>취소</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script type="text/javascript" src="roulette_canvas.js"></script>
+    <script>
+        document.getElementById("editData").addEventListener("click", editData);
+        document.getElementById("setData").addEventListener("click", setData);
+        document.getElementById("cancel").addEventListener("click", closeData);
+        document.getElementById("modal").addEventListener("paste", pasteClip);
+    </script>
 </body>
 
 </html>

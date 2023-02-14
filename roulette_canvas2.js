@@ -1,53 +1,35 @@
 var rouletteData;
 var options;
 var weights;
-
 var startAngle = 0;
 var arc;
 var spinTimeout = null;
+var weightsSum;
 var spinArcStart = 10;
-var spinTime = 0;
-var spinTimeTotal = 0;
-
+var spinTime;
+var spinTimeTotal;
+var angles = [];
 var ctx;
 
-var angles = [];
-var weightsSum;
-var weightAccum;
-
-// console.log(angles);
-
 function init() {
-  if (!localStorage.getItem('rouletteData')) {
-    // console.log("없어용");
-    var data = {
-      items: ["김둘리", "도우너", "마진가", "손낙지", "차차", "허억", "방귀남", "신난다", "엄어나", "육백만불", "최고다", "김치국"],
-      weights: [100, 100, 100, 300, 100, 50, 100, 100, 200, 300, 50, 100]
-    }
-    localStorage.setItem('rouletteData', JSON.stringify(data));
-  }
   rouletteData = JSON.parse(localStorage.getItem('rouletteData'));
   options = rouletteData["items"];
   weights = rouletteData["weights"];
+
   startAngle = 0;
   arc = Math.PI / (options.length / 2);
+
   spinTimeout = null;
-  spinArcStart = 10;
   spinTime = 0;
   spinTimeTotal = 0;
-  ctx;
-  angles = [];
-  weightsSum;
-  weightAccum;
 
   weightsSum = weights.reduce(function add(sum, currValue) { return sum + currValue; }, 0);
 
-  weightAccum = 0;
+  var weightAccum = 0;
   for (let i = 0; i < weights.length; i++) {
     weightAccum += weights[i];
     angles.push(Math.round(360 * (weightAccum / weightsSum) * 10) / 10);
   }
-  console.log(angles);
 }
 
 document.getElementById("spin").addEventListener("click", spin);
@@ -75,8 +57,8 @@ function getColor(item, maxitem) {
 }
 
 function drawRouletteWheel() {
+  init();
   var canvas = document.getElementById("canvas");
-
   if (canvas.getContext) {
     var outsideRadius = 200;
     var textRadius = 160;
@@ -192,5 +174,4 @@ function easeOut(t, b, c, d) {
   return b + c * (tc + -3 * ts + 3 * t);
 }
 
-init();
 drawRouletteWheel();

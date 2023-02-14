@@ -5,3 +5,8 @@
  - 브라우저 local storage 사용
  - 사용자, 가중치 CRUD UI
  - 여러번 돌린 통계 표시
+
+ style.scss
+ `
+ npx sass --watch style.scss style.css
+ `
