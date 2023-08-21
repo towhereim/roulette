@@ -19,9 +19,9 @@
             const newLi = document.createElement('li');
             const li = (obj.id == "box") ? newLi : obj.parentNode;
             if (!item) { item = "" }
-            if (!weight) { weight = "" }
-            newLi.innerHTML = "<input type='text' placeholder='이름' class='item' value=" + item + "> <input type='text' placeholder='가중치' class='weight' value=" + weight + "> <input type='button' value='추가' onclick='add_textbox(this)'>";
-            if (index != 0) { newLi.innerHTML += "<input type='button' value='삭제' onclick='remove(this)'>" }
+            if (!weight) { weight = "1" }
+            newLi.innerHTML = "<input type='text' placeholder='이름' class='item' value=" + item + "> <input type='number' pattern='\d*' placeholder='number' class='weight' value=" + weight + "> <input type='button' class='add' value='➕추가' onclick='add_textbox(this)'>";
+            if (index != 0) { newLi.innerHTML += "<input type='button' class='remove' value='⛔️삭제' onclick='remove(this)'>" }
             insertAfter(li, newLi);
         }
         const remove = (obj) => {
@@ -115,7 +115,9 @@
         <div id="modal" class="modal">
             <div class="header">룰렛판 수정</div>
             <div class="body">
-                <div id="box"></div>
+                <div class="inputbox">
+                    <div id="box"></div>
+                </div>
                 <div class="info">
                     페이지 빈 곳을 클릭하고 이름 가중치로 되어 있는 엑셀 표를 붙여넣을 수 있습니다!😀
                 </div>
