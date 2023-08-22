@@ -15,6 +15,8 @@ var angles = [];
 var weightsSum;
 var weightAccum;
 
+var rSize = 390;
+var rSizeHalf = rSize/2;
 // console.log(angles);
 
 function init() {
@@ -78,17 +80,17 @@ function drawRouletteWheel() {
   var canvas = document.getElementById("canvas");
 
   if (canvas.getContext) {
-    var outsideRadius = 200;
-    var textRadius = 160;
-    var insideRadius = 80;
+    var outsideRadius = rSizeHalf*0.8;
+    var textRadius = rSizeHalf*0.65;
+    var insideRadius = rSizeHalf*0.4;
 
     ctx = canvas.getContext("2d");
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, rSize, rSize);
 
     ctx.strokeStyle = "black";
     ctx.lineWidth = 1;
 
-    ctx.font = "15px AppleSDGothic";
+    ctx.font = "0.9em AppleSDGothic";
 
     for (var i = 0; i < options.length; i++) {
       var weightsSumUptoi = 0;
@@ -108,8 +110,8 @@ function drawRouletteWheel() {
       ctx.fillStyle = getColor(i, options.length);
 
       ctx.beginPath();
-      ctx.arc(250, 250, outsideRadius, angle, angle + arc, false);
-      ctx.arc(250, 250, insideRadius, angle + arc, angle, true);
+      ctx.arc(rSizeHalf, rSizeHalf, outsideRadius, angle, angle + arc, false);
+      ctx.arc(rSizeHalf, rSizeHalf, insideRadius, angle + arc, angle, true);
       ctx.stroke();
       ctx.fill();
 
@@ -119,8 +121,8 @@ function drawRouletteWheel() {
       ctx.shadowBlur = 0;
       ctx.shadowColor = "rgb(220,220,220)";
       ctx.fillStyle = "black";
-      ctx.translate(250 + Math.cos(angle + arc / 2) * textRadius,
-        250 + Math.sin(angle + arc / 2) * textRadius);
+      ctx.translate(rSizeHalf + Math.cos(angle + arc / 2) * textRadius,
+        rSizeHalf + Math.sin(angle + arc / 2) * textRadius);
       ctx.rotate(angle + arc / 2 + Math.PI);
       var text = options[i];
 
@@ -132,11 +134,11 @@ function drawRouletteWheel() {
     ctx.fillStyle = "black";
     ctx.beginPath();
 
-    ctx.arc(250, 35, 7, 0, Math.PI * 2, false);
-    ctx.arc(250, 35, 3, 0, Math.PI * 2, true);
-    ctx.moveTo(250 - 6, 250 - (outsideRadius + 12));
-    ctx.lineTo(250 + 6, 250 - (outsideRadius + 12));
-    ctx.lineTo(250, 250 - (outsideRadius - 2));
+    ctx.arc(rSizeHalf, rSizeHalf - (outsideRadius + 15), 7, 0, Math.PI * 2, false);
+    ctx.arc(rSizeHalf, rSizeHalf - (outsideRadius + 15), 3, 0, Math.PI * 2, true);
+    ctx.moveTo(rSizeHalf - 6, rSizeHalf - (outsideRadius + 12));
+    ctx.lineTo(rSizeHalf + 6, rSizeHalf - (outsideRadius + 12));
+    ctx.lineTo(rSizeHalf, rSizeHalf - (outsideRadius - 2));
     ctx.fill();
   }
 }
@@ -180,9 +182,9 @@ function stopRotateWheel() {
   console.log("degrees: " + degrees + " stopAngle: " + stopAngle + "   index :" + index + "   person : " + options[index]);
   console.log(index);
   ctx.save();
-  ctx.font = 'bold 30px Helvetica, Arial';
+  ctx.font = 'bold 1.5em Helvetica, Arial';
   var text = options[index]
-  ctx.fillText(text, 250 - ctx.measureText(text).width / 2, 250 + 10);
+  ctx.fillText(text, rSizeHalf - ctx.measureText(text).width / 2, rSizeHalf + 10);
   ctx.restore();
 }
 

@@ -19,7 +19,7 @@
             const newLi = document.createElement('li');
             const li = (obj.id == "box") ? newLi : obj.parentNode;
             if (!item) { item = "" }
-            if (!weight) { weight = "1" }
+            if (!weight) { weight = obj.previousElementSibling.value }
             newLi.innerHTML = "<input type='text' placeholder='이름' class='item' value=" + item + "> <input type='number' pattern='\d*' placeholder='number' class='weight' value=" + weight + "> <input type='button' class='add' value='➕추가' onclick='add_textbox(this)'>";
             if (index != 0) { newLi.innerHTML += "<input type='button' class='remove' value='⛔️삭제' onclick='remove(this)'>" }
             insertAfter(li, newLi);
@@ -64,10 +64,12 @@
         var isModalOpen = false;
         function modalOpen() {
             document.getElementById('container').classList.add("modal-open");
+            document.getElementById('container').style.display = 'block';
             isModalOpen = true;
         }
         function modalClose() {
             document.getElementById('container').classList.remove("modal-open");
+            document.getElementById('container').style.display = 'none';
             isModalOpen = false;
         }
 
@@ -98,8 +100,8 @@
     <article>
         <section>
             <div class="header">룰렛판 돌리기</div>
-            <div>
-                <canvas id="canvas" width="500" height="500"></canvas>
+            <div class="div-canvas">
+                <canvas id="canvas" width="390" height="390"></canvas>
             </div>
             <div class="btn">
                 <a href="#" class="btn-3d cyan" id='spin'>돌리고~ 도올리이고~!</a>

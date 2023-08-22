@@ -60,7 +60,7 @@ a[class*="btn"] {
 }
 
 div.btn {
-    width: 500px;
+    // width: 390px;
     text-align: center;
 }
 
@@ -71,6 +71,10 @@ input {
     width: 4em;
     border: 1px solid #aaa;
     font-size: 1em;
+}
+
+div.div-canvas {
+    text-align: center;
 }
 
 input.weight {
@@ -127,18 +131,23 @@ input.weight {
     }
 }
 
+#container.modal-open {
+
+}
+
 #container.modal-open .modal {
     top: 0;
+    overflow-y: scroll;
 }
 
 .inputbox {
     text-align: center;
-    width: 460px;
+    // width: 460px;
 }
 
 #box {
     background: rgba(0, 0, 0, 0.7);
-    padding: 10px 25px;
+    padding: 10px 10px;
     display: inline-block;
     border-radius: 20px;
     // margin: 20px 0;
@@ -146,13 +155,13 @@ input.weight {
     position: relative;
     transition: all 0.4s ease;
     cursor: pointer;
-    width: 80%;
+    // width: 80%;
 }
 
 #box li {
     list-style-type: none;
     text-align: initial;
-    padding: 0px 20px;
+    padding: 0px 10px;
 }
 
 input.add {
